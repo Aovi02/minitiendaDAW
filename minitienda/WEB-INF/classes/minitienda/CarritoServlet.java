@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 
 import java.util.*;
 
-public class CarritoServlet extends HttpServlet {
+public class CarritoServlet extends HttpsServlet {
 
     //Aquí se guardan los productos
     //Cada producto irá con la cantidad que haya, así permito que se seleccione el mismo producto varias veces
