@@ -4,7 +4,7 @@ public class Usuario {
     private String nombre;
     private String contrasena;
     private String numeroTarjeta;
-    private Carrito carrito;
+    private final Carrito carrito;
 
     public Usuario(String nombre, String contrasena, String numeroTarjeta){
         this.nombre = nombre;

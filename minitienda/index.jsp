@@ -33,7 +33,32 @@
 		  <center>
 		    <input type="submit" value="Selecciona_Producto">
 		  </center>
+		  <center>
+			<br><br>
+			<input type="submit" value="accederCarrito">
+		  </center>
 	    </form>
+
+		<%
+        // Check if a CD has been added to the cart
+        Boolean added = (Boolean) request.getAttribute("added");
+        if (added != null && added) {
+		%>
+		<div id="message" style="color:green; text-align:center;">
+            CD added to cart successfully!
+        </div>
+        <script>
+            // JavaScript code to hide the message after 1 second
+            setTimeout(function() {
+                var message = document.getElementById('message');
+                if (message) {
+                    message.style.display = 'none';
+                }
+            }, 1000); // Hide after 1 second (1000 milliseconds)
+        </script>
+		<%
+			}
+		%>
 	  </center>
 	  <hr>
     </body>
