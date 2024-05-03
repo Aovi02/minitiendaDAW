@@ -1,16 +1,22 @@
 package minitienda;
 
-public class Producto {
+public class CD {
     private String nombre;
+    private String autor;
     private Float precio;
 
-    public Producto(String nombre, Float precio){
+    public CD(String nombre, String autor, Float precio){
         this.nombre = nombre;
+        this.autor = autor;
         this.precio = precio;
     }
 
     public void setNombre(String nombre){
         this.nombre = nombre;
+    }
+
+    public void setAutor(String autor){
+        this.autor = autor;
     }
 
     public void setPrecio(Float precio){
@@ -19,6 +25,10 @@ public class Producto {
 
     public String getNombre(){
         return this.nombre;
+    }
+
+    public String getAutor(){
+        return this.autor;
     }
 
     public Float getPrecio(){
@@ -33,8 +43,8 @@ public class Producto {
         if (o == null || this.getClass() != o.getClass())
             return false;
 
-        Producto producto = (Producto) o;
-        return this.nombre.equals(producto.getNombre()) && this.precio.equals(producto.getPrecio());
+        CD producto = (CD) o;
+        return this.nombre.equals(producto.getNombre()) && this.autor.equals(producto.getAutor()) && this.precio.equals(producto.getPrecio());
     }
 
 
@@ -42,6 +52,7 @@ public class Producto {
     public int hashCode() {
         int hash = 17;
         hash = 31 * hash + (nombre != null ? nombre.hashCode() : 0);
+        hash = 31 * hash + (autor != null ? autor.hashCode() : 0);
         hash = 31 * hash + (precio != null ? precio.hashCode() : 0);
         return hash;
     }

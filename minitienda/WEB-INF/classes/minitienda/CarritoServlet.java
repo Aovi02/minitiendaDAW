@@ -11,7 +11,7 @@ public class CarritoServlet extends HttpServlet {
 
     //Aquí se guardan los productos
     //Cada producto irá con la cantidad que haya, así permito que se seleccione el mismo producto varias veces
-    HashMap<Producto, Integer> productos = new HashMap<Producto, Integer>();
+    HashMap<CD, Integer> productos = new HashMap<CD, Integer>();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
@@ -47,7 +47,7 @@ public class CarritoServlet extends HttpServlet {
             cantidad = Integer.parseInt(cant);
 
             //Creamos un Producto
-            Producto p = new Producto(datos, precio);
+            CD p = new CD(datos, precio);
 
             //Lo añadimos al HashMap si no existe, y si existe es añadir por encima la cantidad nueva
             if(productos.containsKey(p))
@@ -59,7 +59,7 @@ public class CarritoServlet extends HttpServlet {
             request.setAttribute("productos", productos);
 
             //Calculamos el precio total
-            for(Producto q : productos.keySet()){
+            for(CD q : productos.keySet()){
                 precioTotal += q.getPrecio();
             }
 
@@ -86,8 +86,8 @@ public class CarritoServlet extends HttpServlet {
 	}
 
     private void eliminarProducto(String nombreProducto) {
-        for(Iterator<Map.Entry<Producto, Integer>> iterator = productos.entrySet().iterator(); iterator.hasNext();) {
-            Map.Entry<Producto, Integer> entry = iterator.next();
+        for(Iterator<Map.Entry<CD, Integer>> iterator = productos.entrySet().iterator(); iterator.hasNext();) {
+            Map.Entry<CD, Integer> entry = iterator.next();
             if(entry.getKey().getNombre().equals(nombreProducto)) {
                 iterator.remove(); // Remove the entry from the HashMap
                 break;
