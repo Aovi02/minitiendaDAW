@@ -3,8 +3,9 @@ package minitienda;
 import java.util.ArrayList;
 
 public class Carrito {
-    ArrayList<Seleccion> selecciones;
-    Float importe;
+    private ArrayList<Seleccion> selecciones;
+    private Float importe;
+    private Usuario usuario;
 
     public Carrito(){
         super();
@@ -15,12 +16,21 @@ public class Carrito {
             selecciones.add(s);
     }
 
+    public void setUsuario(Usuario u){
+        if(u != null)
+            usuario = u;
+    }
+
     public ArrayList<Seleccion> getSelecciones(){
         return this.selecciones;
     }
 
     public Float getImporte(){
         return this.importe;
+    }
+
+    public Usuario getUsuario(){
+        return this.usuario;
     }
     
 }
