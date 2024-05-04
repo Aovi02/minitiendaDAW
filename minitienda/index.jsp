@@ -30,12 +30,18 @@
 	      <b>Cantidad:</b>
 	      <input type="text" name="cantidad" value="1">
 		<p>
+		  <input type="hidden" name="buttonClicked" id="buttonClicked" value="">
 		  <center>
-		    <input type="submit" value="Selecciona_Producto">
+		    <input type="submit" value="Seleccionar Producto" onclick="setButtonClicked(this.value)">
 		  </center>
 		  <center>
 			<br><br>
-			<input type="submit" value="accederCarrito">
+			<input type="submit" value="Ver carrrito" name="botonCarrito" onclick="setButtonClicked(this.value)">
+			<script>
+				function setButtonClicked(buttonValue) {
+					document.getElementById('buttonClicked').value = buttonValue;
+				}
+			</script>
 		  </center>
 	    </form>
 
@@ -45,7 +51,7 @@
         if (added != null && added) {
 		%>
 		<div id="message" style="color:green; text-align:center;">
-            CD added to cart successfully!
+            CD añadido al carrito con éxito!
         </div>
         <script>
             // JavaScript code to hide the message after 1 second
