@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": [
+        "minitienda/WEB-INF/classes"
+    ],
+    "java.project.referencedLibraries": [
+        "minitienda/WEB-INF/lib/servlet-api.jar"
+    ]
+}

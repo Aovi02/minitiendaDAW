@@ -1,13 +1,9 @@
-<%@ page import="minitienda.Producto" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.net.URLEncoder" %>
-
-<%
-    // Obtener el HashMap de productos del atributo de solicitud
-    HashMap<Producto, Integer> productos = (HashMap<Producto, Integer>) request.getAttribute("productos");
-    Float precioTotal = (Float) request.getAttribute("precioTotal");
-%>
+<%@page import="minitienda.*" %>
+<%@page import="java.util.HashMap" %>
+<%@page import="java.util.Map" %>
+<%@page isELIgnored="false" %>
+<%@page session="true" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
@@ -17,28 +13,40 @@
         <H1>Minitienda </H1>
         <table border="0" cellpadding="0" width="75%" bgcolor="#FFFFFF">
         <tr>
-            <td><b>Titulo del CD</b></td>
+            <td><b>Titulo</b></td>
+            <td><b>Autor</b></td>
+            <td><b>Pais</b></td>
             <td><b>Cantidad</b></td>
             <td><b>Importe</b></td>
             <td></td>
         </tr>
-        <%-- Iterar sobre el HashMap de productos y mostrar cada producto en la tabla --%>
-            <% for (Map.Entry<Producto, Integer> entry : productos.entrySet()) { %>
-                <tr>
-                    <td><b><%= entry.getKey().getNombre() %></b></td>
-                    <td><b><%= entry.getValue() %></b></td>
-                    <td><b><%= entry.getValue() * entry.getKey().getPrecio() %></b></td>
-                    <td><a href="CarritoServlet?eliminar=<%= URLEncoder.encode(entry.getKey().getNombre(), "UTF-8") %>">Eliminar producto</a></td>
-                </tr>
-        <% } %>
+        <c:forEach items="${carrito.selecciones}" var="s">
+            <tr>
+                <td><b>${s.cd.nombre}</b></td>
+                <td><b>${s.cd.autor}</b></td>
+                <td><b>${s.cd.pais}</b></td>
+                <td><b>${s.cantidad}</b></td>
+                <td><b>${s.cd.precio * s.cantidad}</b></td>
+            </tr>
+        </c:forEach>
         <tr>
             <td><b>Importe Total</b></td>
-            <td><b> <%= precioTotal %> </b></td>
+            <td><b> ${carrito.importe} </b></td>
         </tr>
         </table>
 
-        <button name= "botonPago" value="true">Pagar importe</button>
-        <button name= "volver" value="true">Seguir comprando</button>
+        <form action="/minitienda/CarritoServlet" method="post">
+            <input type="hidden" name="buttonClicked" id="buttonClicked" value="">
+
+            <input type="submit" value="Pagar" onclick="setButtonClicked(this.value)">
+            <input type="submit" value="Volver tienda" name="botonVolver" onclick="setButtonClicked(this.value)">
+
+			<script>
+				function setButtonClicked(buttonValue) {
+					document.getElementById('buttonClicked').value = buttonValue;
+				}
+			</script>
+        </form>
     </center>
 </BODY>
 </HTML>
