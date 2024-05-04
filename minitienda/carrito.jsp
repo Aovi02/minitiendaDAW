@@ -54,7 +54,7 @@
 				}
 
                 function setEliminar(seleccion) {
-					document.getElementById('Eliminar').value = seleccion;
+					document.getElementsByName('Eliminar')[0].value = seleccion;
 				}
 			</script>
         </form>
