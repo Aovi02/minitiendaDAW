@@ -21,7 +21,7 @@ public class TiendaServlet extends HttpServlet {
 
         //Variables del Servlet para la sesión y el contexto
         HttpSession sesion = request.getSession(true);
-        ServletContext contexto = getServletContext();
+        //ServletContext contexto = getServletContext();
 
         String buttonClicked = request.getParameter("buttonClicked");
         if (buttonClicked != null && buttonClicked.equals("Ver carrrito")) {

@@ -10,7 +10,7 @@ public class CarritoServlet extends HttpServlet{
 
     private Carrito carrito;
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession sesion = request.getSession(true);
         carrito = (Carrito)sesion.getAttribute("carrito");
@@ -28,13 +28,16 @@ public class CarritoServlet extends HttpServlet{
         String botonEliminar = request.getParameter("Eliminar");
 
         if(botonEliminar != null){
-            carrito.eliminarSeleccion(Integer.valueOf(botonEliminar));
+            Integer id = Integer.valueOf(botonEliminar);
+            carrito.eliminarSeleccion(id);
+            sesion.setAttribute("carrito", carrito);
+            gotoPage("/carrito.jsp", request, response);
         }
         
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
     }
 
     public void gotoPage(String address, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
