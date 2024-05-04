@@ -6,7 +6,7 @@ import javax.servlet.http.*;
 
 import java.util.*;
 
-public class CarritoServlet extends HttpServlet {
+public class TiendaServlet extends HttpServlet {
 
     //Aquí se guardan los productos
     //Cada producto irá con la cantidad que haya, así permito que se seleccione el mismo producto varias veces

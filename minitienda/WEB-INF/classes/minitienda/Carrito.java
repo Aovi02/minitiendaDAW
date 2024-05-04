@@ -20,6 +20,13 @@ public class Carrito {
         }
     }
 
+    public void eliminarSeleccion(Seleccion s){
+        if(s != null){
+            selecciones.remove(s);
+            importe -= s.getCantidad() * s.getCd().getPrecio();
+        }
+    }
+
     public void setUsuario(Usuario u){
         if(u != null)
             usuario = u;

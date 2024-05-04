@@ -13,7 +13,7 @@
       <hr>
 	<p>
 	  <center>
-	    <form method="post" action="/minitienda/CarritoServlet">
+	    <form method="post" action="/minitienda/TiendaServlet">
 	      <b>CD:</b> 
 	      <select name="datos">
 		<option>Yuan | The Guo Brothers | China | $14.95</option>
