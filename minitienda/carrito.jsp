@@ -35,8 +35,18 @@
         </tr>
         </table>
 
-        <button name= "botonPago" value="true">Pagar importe</button>
-        <button name= "volver" value="true">Seguir comprando</button>
+        <form action="/minitienda/CarritoServlet" method="post">
+            <input type="hidden" name="buttonClicked" id="buttonClicked" value="">
+
+            <input type="submit" value="Pagar" onclick="setButtonClicked(this.value)">
+            <input type="submit" value="Volver tienda" name="botonVolver" onclick="setButtonClicked(this.value)">
+
+			<script>
+				function setButtonClicked(buttonValue) {
+					document.getElementById('buttonClicked').value = buttonValue;
+				}
+			</script>
+        </form>
     </center>
 </BODY>
 </HTML>

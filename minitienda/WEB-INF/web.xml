@@ -16,5 +16,15 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  <url-pattern>/TiendaServlet</url-pattern>
  </servlet-mapping>
 
+ <servlet>
+<servlet-name>CarritoServlet</servlet-name>
+<servlet-class>minitienda.CarritoServlet</servlet-class>
+</servlet>
+
+ <servlet-mapping>
+ <servlet-name>CarritoServlet</servlet-name>
+ <url-pattern>/CarritoServlet</url-pattern>
+ </servlet-mapping>
+
 
 </web-app>
