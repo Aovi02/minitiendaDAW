@@ -11,19 +11,26 @@ public class CarritoServlet extends HttpServlet{
     private Carrito carrito;
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        HttpSession sesion = request.getSession(true);
+        carrito = (Carrito)sesion.getAttribute("carrito");
+
         String buttonClicked = request.getParameter("buttonClicked");
 
         if (buttonClicked != null) {
             if (buttonClicked.equals("Pagar")) {
-                // Redirect to the payment page (e.g., login.jsp)
                 gotoPage("/login.jsp", request, response);
-                //response.sendRedirect(request.getContextPath() + "/login.jsp");
             } else if (buttonClicked.equals("Volver tienda")) {
-                // Redirect back to the shop (e.g., index.jsp)
                 gotoPage("/index.jsp", request, response);
-                //response.sendRedirect(request.getContextPath() + "/index.jsp");
             }
         }
+
+        String botonEliminar = request.getParameter("Eliminar");
+
+        if(botonEliminar != null){
+            carrito.eliminarSeleccion(Integer.valueOf(botonEliminar));
+        }
+        
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

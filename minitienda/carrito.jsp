@@ -27,11 +27,18 @@
                 <td><b>${s.cd.pais}</b></td>
                 <td><b>${s.cantidad}</b></td>
                 <td><b>${s.cd.precio * s.cantidad}</b></td>
+                <td>
+                    <form action="/minitienda/CarritoServlet" method="post">
+                        <input type="submit" value="Eliminar" onclick="setEliminar('${s.id}')">
+                        <input type="hidden" name="Eliminar" value="">
+                    </form>
+                </td>
             </tr>
         </c:forEach>
         <tr>
             <td><b>Importe Total</b></td>
-            <td><b> ${carrito.importe} </b></td>
+            <td colspan="4"><b>${carrito.importe}</b></td>
+            <td></td>
         </tr>
         </table>
 
@@ -44,6 +51,10 @@
 			<script>
 				function setButtonClicked(buttonValue) {
 					document.getElementById('buttonClicked').value = buttonValue;
+				}
+
+                function setEliminar(seleccion) {
+					document.getElementById('Eliminar').value = seleccion;
 				}
 			</script>
         </form>

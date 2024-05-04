@@ -20,10 +20,14 @@ public class Carrito {
         }
     }
 
-    public void eliminarSeleccion(Seleccion s){
-        if(s != null){
-            selecciones.remove(s);
-            importe -= s.getCantidad() * s.getCd().getPrecio();
+    public void eliminarSeleccion(Integer id){
+        if(id != null){
+            for(Seleccion s : selecciones){
+                if(s.getId() == id){
+                    selecciones.remove(s);
+                    importe -= s.getCantidad() * s.getCd().getPrecio();
+                }
+            }
         }
     }
 

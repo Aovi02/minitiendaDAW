@@ -55,8 +55,6 @@ public class TiendaServlet extends HttpServlet {
                 //Añadimos seleccion a carrito
                 carrito.addSeleccion(seleccion);
 
-                //Guardo el CD
-                request.setAttribute("carrito", carrito);
                 request.setAttribute("added", true);
 
                 gotoPage("/index.jsp", request, response);
