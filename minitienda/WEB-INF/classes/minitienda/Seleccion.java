@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Seleccion {
     private static int nextId = 1;
     
-    private int id;
+    private final int id;
     private CD cd;
     private Integer cantidad;
 

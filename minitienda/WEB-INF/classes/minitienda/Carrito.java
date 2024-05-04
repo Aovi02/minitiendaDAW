@@ -1,6 +1,7 @@
 package minitienda;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Carrito {
     private final ArrayList<Seleccion> selecciones;
@@ -20,11 +21,13 @@ public class Carrito {
         }
     }
 
-    public void eliminarSeleccion(Integer id){
-        if(id != null){
-            for(Seleccion s : selecciones){
-                if(s.getId() == id){
-                    selecciones.remove(s);
+    public void eliminarSeleccion(Integer id) {
+        if (id != null) {
+            Iterator<Seleccion> iterator = selecciones.iterator();
+            while (iterator.hasNext()) {
+                Seleccion s = iterator.next();
+                if (s.getId() == id) {
+                    iterator.remove();
                     importe -= s.getCantidad() * s.getCd().getPrecio();
                 }
             }
