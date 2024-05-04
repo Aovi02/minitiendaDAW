@@ -13,7 +13,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
 
  <servlet-mapping>
  <servlet-name>TiendaServlet</servlet-name>
- <url-pattern>/tienda</url-pattern>
+ <url-pattern>/TiendaServlet</url-pattern>
  </servlet-mapping>
 
 
