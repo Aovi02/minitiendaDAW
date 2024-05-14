@@ -80,12 +80,13 @@ public class TiendaServlet extends HttpServlet {
                     String titulo = resultado.getString("titulo");
                     String autor = resultado.getString("autor");
                     String pais = resultado.getString("pais");
-                    float precio = resultado.getFloat("precio");
+                    String precio = resultado.getString("precio");
 
                     cds_vista.add(titulo+" | "+autor+" | "+pais+" | "+precio);
                 }
 
                 contexto.setAttribute("cds", cds_vista);
+                gotoPage("/index.jsp", request, response);
 
             } catch (SQLException e) {
                 e.printStackTrace();
