@@ -9,11 +9,13 @@ import java.util.*;
 public class CarritoServlet extends HttpServlet{
 
     private Carrito carrito;
+    private SQL secuela;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession sesion = request.getSession(true);
         carrito = (Carrito)sesion.getAttribute("carrito");
+        secuela = new SQL();
 
         String buttonClicked = request.getParameter("buttonClicked");
 
@@ -30,6 +32,7 @@ public class CarritoServlet extends HttpServlet{
         if(botonEliminar != null){
             Integer id = Integer.valueOf(botonEliminar);
             carrito.eliminarSeleccion(id);
+            secuela.meterPedido("prueba1","prueba1",(float) 3.0);
             sesion.setAttribute("carrito", carrito);
             gotoPage("/carrito.jsp", request, response);
         }
