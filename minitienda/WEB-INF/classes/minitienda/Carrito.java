@@ -2,15 +2,17 @@ package minitienda;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Carrito {
-    private final ArrayList<Seleccion> selecciones;
+    private final Set<Seleccion> selecciones;
     private Float importe;
     private Usuario usuario;
 
     public Carrito(){
         super();
-        selecciones = new ArrayList<>();
+        selecciones = new HashSet<>();
         importe = 0.f;
     }
 
@@ -39,7 +41,7 @@ public class Carrito {
             usuario = u;
     }
 
-    public ArrayList<Seleccion> getSelecciones(){
+    public Set<Seleccion> getSelecciones(){
         return this.selecciones;
     }
 
