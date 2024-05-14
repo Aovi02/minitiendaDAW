@@ -3,6 +3,7 @@
         "minitienda/WEB-INF/classes"
     ],
     "java.project.referencedLibraries": [
+        "minitienda/WEB-INF/lib/postgresql-42.7.3.jar",
         "minitienda/WEB-INF/lib/servlet-api.jar"
     ]
 }

@@ -1,16 +1,24 @@
 package minitienda;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import java.util.*;
+import javax.naming.Context;
 
 public class TiendaServlet extends HttpServlet {
 
     //Aquí se guardan los productos
     //Cada producto irá con la cantidad que haya, así permito que se seleccione el mismo producto varias veces
     Carrito carrito = new Carrito();
+
+    ArrayList<String> cds_vista = new ArrayList<>();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
@@ -21,7 +29,7 @@ public class TiendaServlet extends HttpServlet {
 
         //Variables del Servlet para la sesión y el contexto
         HttpSession sesion = request.getSession(true);
-        //ServletContext contexto = getServletContext();
+        ServletContext contexto = getServletContext();
 
         String buttonClicked = request.getParameter("buttonClicked");
         if (buttonClicked != null && buttonClicked.equals("Ver carrrito")) {
@@ -58,6 +66,29 @@ public class TiendaServlet extends HttpServlet {
                 request.setAttribute("added", true);
 
                 gotoPage("/index.jsp", request, response);
+            }
+        }
+        else{
+            try (Connection conexion = Conexion.getConnection()) {
+                // Cogemos la lista de CDs y la guardamos en 
+                Statement statement = conexion.createStatement();
+
+                String consulta = "SELECT * FROM cds";
+                ResultSet resultado = statement.executeQuery(consulta);
+
+                while (resultado.next()) {
+                    String titulo = resultado.getString("titulo");
+                    String autor = resultado.getString("autor");
+                    String pais = resultado.getString("pais");
+                    float precio = resultado.getFloat("precio");
+
+                    cds_vista.add(titulo+" | "+autor+" | "+pais+" | "+precio);
+                }
+
+                contexto.setAttribute("cds", cds_vista);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 

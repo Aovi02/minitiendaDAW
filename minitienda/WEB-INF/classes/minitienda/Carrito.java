@@ -1,8 +1,7 @@
 package minitienda;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class Carrito {
