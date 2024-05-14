@@ -4,6 +4,12 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import java.util.*;
 
 public class TiendaServlet extends HttpServlet {
@@ -42,12 +48,54 @@ public class TiendaServlet extends HttpServlet {
                 String precioString = t.nextToken();
                 precioString = precioString.replace('$',' ').trim();
 
+		// Datos de conexión a la base de datos
+		String url = "jdbc:postgresql://localhost:5432/postgres";
+		String usuario = "postgres";
+		String contraseña = "postgres";
+		String correoUsuario = "algo";
+		String contrasena = null;
+		String tipoTarjeta = null;
+		String numeroTarjeta = null;
+		// Intentar establecer la conexión y ejecutar la consulta
+		try {
+		    // Cargar el controlador de la base de datos
+		    Class.forName("org.postgresql.Driver");
+
+		    // Establecer la conexión
+		    Connection conexion = DriverManager.getConnection(url, usuario, contraseña);
+
+		    // Crear una declaración para ejecutar la consulta
+		    Statement statement = conexion.createStatement();
+
+		    // Ejecutar la consulta SQL para seleccionar todos los usuarios
+		    String sql = "SELECT * FROM usuarios";
+		    ResultSet resultado = statement.executeQuery(sql);
+
+		    // Iterar sobre el resultado y imprimir los datos de cada usuario
+		    while (resultado.next()) {
+		        correoUsuario = resultado.getString("correo_usuario");
+		        contrasena = resultado.getString("contrasena");
+		        tipoTarjeta = resultado.getString("tipo_tarjeta");
+		        numeroTarjeta = resultado.getString("numero_tarjeta");
+		    }
+
+		    // Cerrar la conexión
+		    conexion.close();
+		} catch (ClassNotFoundException e) {
+		    System.out.println("No se pudo cargar el controlador: " + e.getMessage());
+		    correoUsuario = "ERROR1";
+		} catch (SQLException e) {
+		    System.out.println("Error al conectar a la base de datos: " + e.getMessage());
+		    correoUsuario = "ERROR2";
+		}
+
                 //Pasamos los campos al formato deseado
                 Float precio = Float.valueOf(precioString);
                 Integer cantidad = Integer.valueOf(cant);
 
+
                 //Creamos un CD
-                CD cd = new CD(titulo, autor, pais, precio);
+                CD cd = new CD(correoUsuario, autor, tipoTarjeta, precio);
 
                 //Creamos Seleccion
                 Seleccion seleccion = new Seleccion(cd, cantidad);
