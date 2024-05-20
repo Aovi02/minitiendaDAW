@@ -1,3 +1,7 @@
+<%@page import="minitienda.*" %>
+<%@page isELIgnored="false" %>
+<%@page session="true" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
       <title>Musica para DAA</title>
@@ -45,26 +49,38 @@
 		  </center>
 	    </form>
 
-		<%
-        // Check if a CD has been added to the cart
-        Boolean added = (Boolean) request.getAttribute("added");
-        if (added != null && added) {
-		%>
-		<div id="message" style="color:green; text-align:center;">
-            CD añadido al carrito con éxito!
-        </div>
-        <script>
-            // JavaScript code to hide the message after 1 second
-            setTimeout(function() {
-                var message = document.getElementById('message');
-                if (message) {
-                    message.style.display = 'none';
-                }
-            }, 1000); // Hide after 1 second (1000 milliseconds)
-        </script>
-		<%
-			}
-		%>
+		<c:choose>
+    <c:when test="${added != null && added}">
+			<div id="message" style="color:green; text-align:center;">
+				CD añadido al carrito con éxito!
+			</div>
+			<script>
+				// JavaScript code to hide the message after 1 second
+				setTimeout(function() {
+					var message = document.getElementById('message');
+					if (message) {
+						message.style.display = 'none';
+					}
+				}, 1000); // Hide after 1 second (1000 milliseconds)
+			</script>
+		</c:when>
+		<c:when test="${added != null && !added}">
+			<div id="message" style="color:red; text-align:center;">
+				Error: CD no se ha añadido al carrito!
+			</div>
+			<script>
+				// JavaScript code to hide the message after 1 second
+				setTimeout(function() {
+					var message = document.getElementById('message');
+					if (message) {
+						message.style.display = 'none';
+					}
+				}, 1000); // Hide after 1 second (1000 milliseconds)
+			</script>
+		</c:when>
+		<c:otherwise></c:otherwise>
+	</c:choose>
+
 	  </center>
 	  <hr>
     </body>

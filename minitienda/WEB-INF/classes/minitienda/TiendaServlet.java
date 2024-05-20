@@ -1,6 +1,12 @@
 package minitienda;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -11,6 +17,9 @@ public class TiendaServlet extends HttpServlet {
     //Aquí se guardan los productos
     //Cada producto irá con la cantidad que haya, así permito que se seleccione el mismo producto varias veces
     Carrito carrito = new Carrito();
+
+    //Clase conexión para conectarse a la BD
+    Conexion conexion = new Conexion();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
@@ -36,9 +45,9 @@ public class TiendaServlet extends HttpServlet {
             //Recuperamos informacion del precio del CD
             if(datos != null && cant != null){
                 StringTokenizer t = new StringTokenizer(datos,"|");
-                String titulo = t.nextToken();
-                String autor = t.nextToken();
-                String pais = t.nextToken();
+                String titulo = t.nextToken().trim();
+                String autor = t.nextToken().trim();
+                String pais = t.nextToken().trim();
                 String precioString = t.nextToken();
                 precioString = precioString.replace('$',' ').trim();
 
@@ -52,15 +61,27 @@ public class TiendaServlet extends HttpServlet {
                 //Creamos Seleccion
                 Seleccion seleccion = new Seleccion(cd, cantidad);
 
-                //Añadimos seleccion a carrito
-                carrito.addSeleccion(seleccion);
+                //Comprobamos si se puede comprar
+                boolean sePuedeComprar = false;
+                try {
+                    sePuedeComprar = checkDisponibilidad(seleccion);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
 
-                request.setAttribute("added", true);
+                //Añadimos seleccion a carrito
+                if(sePuedeComprar){
+                    carrito.addSeleccion(seleccion);
+
+                    request.setAttribute("added", true);
+                }
+                else{
+                    request.setAttribute("added", false);
+                }
 
                 gotoPage("/index.jsp", request, response);
             }
         }
-
     }
 
     public void gotoPage(String address, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -71,4 +92,66 @@ public class TiendaServlet extends HttpServlet {
 		if(disp != null)
 			disp.forward(request, response);
 	}
+
+    private boolean checkDisponibilidad(Seleccion sel) throws ClassNotFoundException{
+        Class.forName("org.postgresql.Driver");
+        // Usamos try-with-resources para manejar la conexión y el PreparedStatement
+        try (Connection conexion = Conexion.getConnection()) {
+            // Preparamos la consulta SQL usando parámetros para evitar inyección SQL
+            String consulta = "SELECT * FROM cds WHERE titulo = ? AND autor = ? AND pais = ?";
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                // Establecemos los valores de los parámetros
+                statement.setString(1, sel.getCd().getNombre());
+                statement.setString(2, sel.getCd().getAutor());
+                statement.setString(3, sel.getCd().getPais());
+
+                // Ejecutamos la consulta
+                try (ResultSet resultado = statement.executeQuery()) {
+                    if (resultado.next()) {
+                        // Obtenemos la cantidad disponible
+                        int disponible = resultado.getInt("disponible");
+
+                        // Verificamos si la cantidad disponible es mayor que 0
+                        if (disponible > 0) {
+                            // Restamos 1 a la cantidad disponible
+                            int nuevoDisponible = disponible - sel.getCantidad();
+
+                            if(nuevoDisponible >= 0){
+                                // Preparamos la actualización SQL
+                                String actualizacion = "UPDATE cds SET disponible = ? WHERE titulo = ? AND autor = ? AND pais = ?";
+                                try (PreparedStatement updateStatement = conexion.prepareStatement(actualizacion)) {
+                                    // Establecemos los valores de los parámetros para la actualización
+                                    updateStatement.setInt(1, nuevoDisponible);
+                                    updateStatement.setString(2, sel.getCd().getNombre());
+                                    updateStatement.setString(3, sel.getCd().getAutor());
+                                    updateStatement.setString(4, sel.getCd().getPais());
+
+                                    // Ejecutamos la actualización
+                                    int filasActualizadas = updateStatement.executeUpdate();
+                                    if (filasActualizadas > 0) {
+                                        System.out.println("Cantidad actualizada exitosamente. Nuevo disponible: " + nuevoDisponible);
+                                        return true;
+                                    } else {
+                                        System.out.println("No se pudo actualizar la cantidad.");
+                                        return false;
+                                    }
+                                }
+                            }
+                            else{
+                                System.out.println("Hay menos CDs disponibles de los que se pidio.");
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 }
