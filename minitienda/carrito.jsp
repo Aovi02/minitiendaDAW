@@ -42,7 +42,9 @@
             <input type="hidden" name="Eliminar" id="Eliminar" value="">
             <input type="hidden" name="buttonClicked" id="buttonClicked" value="">
 
-            <input type="submit" value="Pagar" onclick="setButtonClicked(this.value)">
+            <c:if test="${carrito.importe > 0}">
+                <input type="submit" value="Pagar" onclick="setButtonClicked(this.value)">
+            </c:if>
             <input type="submit" value="Volver tienda" name="botonVolver" onclick="setButtonClicked(this.value)">
 
             <script>
