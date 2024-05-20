@@ -38,13 +38,10 @@
                 <td colspan="4"><b>${carrito.importe}</b></td>
                 <td></td>
             </tr>
-            </table>
-            <input type="hidden" name="PagarFinal" id="PagarFinal" value="">
-	    <input type="hidden" name="LOGEAR" id="LOGEAR" value="">            
+            </table>        
             <input type="hidden" name="buttonClicked" id="buttonClicked" value="">
 
             <input type="submit" value="PagarFinal" onclick="setButtonClicked(this.value)">
-            <input type="submit" value="LOGEAR" onclick="setButtonClicked(this.value)">
             <input type="submit" value="Volver tienda" name="botonVolver" onclick="setButtonClicked(this.value)">
 
             <script>

@@ -37,6 +37,8 @@
 		  <center>
 			<br><br>
 			<input type="submit" value="Ver carrrito" name="botonCarrito" onclick="setButtonClicked(this.value)">
+			<input type="submit" value="LOGEAR" onclick="setButtonClicked(this.value)">
+			<input type="hidden" name="LOGEAR" id="LOGEAR" value="">
 			<script>
 				function setButtonClicked(buttonValue) {
 					document.getElementById('buttonClicked').value = buttonValue;

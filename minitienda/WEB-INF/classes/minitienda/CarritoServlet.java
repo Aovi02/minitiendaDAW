@@ -29,7 +29,8 @@ public class CarritoServlet extends HttpServlet{
                 	gotoPage("/index.jsp", request, response);
             } else if (buttonClicked.equals("PagarFinal")) {
             		//AQUI METER SQL
-            		secuela.meterPedido(session.getAttribute("id"), session.getAttribute("correo"), pagoTotal);
+            		System.out.println("MARTIRIO");
+            		secuela.meterPedido((String) sesion.getAttribute("id"), (String) sesion.getAttribute("correo"), pagoTotal);
                 	gotoPage("/index.jsp", request, response);
             }
         }

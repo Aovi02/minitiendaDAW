@@ -7,21 +7,21 @@
 </head>
 <body>
     <h2>Registro de Usuario</h2>
-    <form action="/minitienda/TiendaServlet" method="post">
+    <form method="post" action="/minitienda/TiendaServlet">
         <label for="correo">Correo:</label>
-        <input type="text" id="correo" name="correo" required>
+        <input type="text" id="correo" name="correo">
         <br>
         <label for="id">ID:</label>
-        <input type="text" id="id" name="id" required>
+        <input type="text" id="id" name="id">
         <br>
         <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required>
-        <br>
-        <input type="hidden" name="LOGIN" id="LOGIN" value="">
+        <input type="password" id="contrasena" name="contrasena">
+        <br>       
+        <input type="hidden" name="buttonClicked" id="buttonClicked" value="">
         <input type="submit" value="LOGIN" name="LOGIN" onclick="setButtonClicked(this.value)">
         <script>
                 function setButtonClicked(buttonValue) {
-                    document.getElementById('LOGIN').value = buttonValue;
+                    document.getElementById('buttonClicked').value = buttonValue;
                 }
         </script>
     </form>

@@ -17,6 +17,7 @@ public class TiendaServlet extends HttpServlet {
     //Aquí se guardan los productos
     //Cada producto irá con la cantidad que haya, así permito que se seleccione el mismo producto varias veces
     Carrito carrito = new Carrito();
+    SQL seculito = new SQL();
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
@@ -32,16 +33,24 @@ public class TiendaServlet extends HttpServlet {
         String buttonClicked = request.getParameter("buttonClicked");
        	String id = null;
 	String correo = null;
+	String pswd = null;
         if (buttonClicked != null && buttonClicked.equals("Ver carrrito")) {
             sesion.setAttribute("carrito", carrito);
             gotoPage("/carrito.jsp", request, response);
         } else if (buttonClicked != null && buttonClicked.equals("LOGEAR")) {
+            System.out.println("ME MUERO AQUE");
             gotoPage("/login.jsp", request, response);
+ 	    System.out.println("ME MUERO ACU");
         } else if (buttonClicked != null && buttonClicked.equals("LOGIN")) {
+            System.out.println("ME MUERO AQUI");
             id = request.getParameter("id");
             correo = request.getParameter("correo");
+            pswd = request.getParameter("contrasena");
             sesion.setAttribute("correo", correo);
             sesion.setAttribute("id", id);
+            System.out.println(id);
+            seculito.meterUsuario(correo, pswd, id);
+            gotoPage("/index.jsp", request, response);
         }
         
         
