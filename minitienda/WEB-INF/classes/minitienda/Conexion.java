@@ -2,8 +2,6 @@ package minitienda;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Conexion {
@@ -15,13 +13,4 @@ public class Conexion {
         return DriverManager.getConnection(URL, USUARIO, CONTRASENA);
     }
 
-    public static void closeConnection(Connection connection) {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
