@@ -18,12 +18,19 @@ public class CarritoServlet extends HttpServlet{
         secuela = new SQL();
 
         String buttonClicked = request.getParameter("buttonClicked");
-
+	
+	Float pagoTotal = carrito.getImporte();
         if (buttonClicked != null) {
             if (buttonClicked.equals("Pagar")) {
-                gotoPage("/login.jsp", request, response);
+            	sesion.setAttribute("pagoTotal", pagoTotal);
+                gotoPage("/pago.jsp", request, response);//gotoPage("/login.jsp", request, response);
+                buttonClicked = request.getParameter("buttonClicked");
             } else if (buttonClicked.equals("Volver tienda")) {
-                gotoPage("/index.jsp", request, response);
+                	gotoPage("/index.jsp", request, response);
+            } else if (buttonClicked.equals("PagarFinal")) {
+            		//AQUI METER SQL
+            		secuela.meterPedido(session.getAttribute("id"), session.getAttribute("correo"), pagoTotal);
+                	gotoPage("/index.jsp", request, response);
             }
         }
 

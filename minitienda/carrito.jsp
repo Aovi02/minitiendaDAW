@@ -39,10 +39,12 @@
                 <td></td>
             </tr>
             </table>
-            <input type="hidden" name="Eliminar" id="Eliminar" value="">
+            <input type="hidden" name="PagarFinal" id="PagarFinal" value="">
+	    <input type="hidden" name="LOGEAR" id="LOGEAR" value="">            
             <input type="hidden" name="buttonClicked" id="buttonClicked" value="">
 
-            <input type="submit" value="Pagar" onclick="setButtonClicked(this.value)">
+            <input type="submit" value="PagarFinal" onclick="setButtonClicked(this.value)">
+            <input type="submit" value="LOGEAR" onclick="setButtonClicked(this.value)">
             <input type="submit" value="Volver tienda" name="botonVolver" onclick="setButtonClicked(this.value)">
 
             <script>
@@ -51,7 +53,7 @@
                 }
 
                 function setEliminar(seleccion) {
-                    document.getElementById('Eliminar').value = seleccion;
+                    document.getElementById('PagarFinal').value = seleccion;
                 }
             </script>
         </form>

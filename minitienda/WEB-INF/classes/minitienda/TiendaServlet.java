@@ -30,10 +30,21 @@ public class TiendaServlet extends HttpServlet {
         //ServletContext contexto = getServletContext();
 
         String buttonClicked = request.getParameter("buttonClicked");
+       	String id = null;
+	String correo = null;
         if (buttonClicked != null && buttonClicked.equals("Ver carrrito")) {
             sesion.setAttribute("carrito", carrito);
             gotoPage("/carrito.jsp", request, response);
+        } else if (buttonClicked != null && buttonClicked.equals("LOGEAR")) {
+            gotoPage("/login.jsp", request, response);
+        } else if (buttonClicked != null && buttonClicked.equals("LOGIN")) {
+            id = request.getParameter("id");
+            correo = request.getParameter("correo");
+            sesion.setAttribute("correo", correo);
+            sesion.setAttribute("id", id);
         }
+        
+        
         else if(buttonClicked != null && buttonClicked.equals("Seleccionar Producto")){
             //Datos es el string completo del formulario, la cantidad ya viene dada por el otro text field
             String datos = request.getParameter("datos");
