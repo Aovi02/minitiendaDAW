@@ -24,9 +24,19 @@ public class CarritoServlet extends HttpServlet{
 
         if (buttonClicked != null) {
             if (buttonClicked.equals("Pagar")) {
-                gotoPage("/login.jsp", request, response);
-            } else if (buttonClicked.equals("Volver tienda")) {
+                sesion.setAttribute("importe_pedido", carrito.getImporte());
+                gotoPage("/pago.jsp", request, response);
+            }
+            else if (buttonClicked.equals("Volver tienda")) {
                 gotoPage("/index.jsp", request, response);
+            }
+            else if(buttonClicked.equals("Hacer Pedido")){
+                if(sesion.getAttribute("correo") == null)
+                    gotoPage("/login.jsp", request, response);
+                else{
+                    sesion.setAttribute("confirmacion", true);
+                    gotoPage("/pago.jsp", request, response);
+                }
             }
         }
 
