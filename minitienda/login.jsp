@@ -9,7 +9,7 @@
 <body bgcolor="#FDF5E6">
     <h2>Registro de Usuario</h2>
     <center>
-        <form action="/minitienda/PedidoServlet" method="post">
+        <form action="/minitienda/LoginServlet" method="post">
             <label for="correo">Correo:</label>
             <input type="text" id="correo" name="correo" required>
             <br>

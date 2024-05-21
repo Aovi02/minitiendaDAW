@@ -2,7 +2,6 @@ package minitienda;
 
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,9 +9,8 @@ import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import java.util.*;
 
-public class PedidoServlet extends HttpServlet{
+public class LoginServlet extends HttpServlet{
 
     private Pedido pedido;
 
@@ -25,6 +23,7 @@ public class PedidoServlet extends HttpServlet{
         String buttonClicked = request.getParameter("buttonClicked");
 
         if (buttonClicked != null) {
+            //Si se hizo login, creamos el usuario y volvemos a la página del pedido
             if (buttonClicked.equals("Login")) {
                 String correo = request.getParameter("correo");
                 String contrasena = request.getParameter("contrasena");
@@ -35,6 +34,7 @@ public class PedidoServlet extends HttpServlet{
                 sesion.setAttribute("usuario", user);
 
                 try {
+                    //Comprobamos en la BD para hacer el login
                     boolean loginExito = loginUsuario(correo, contrasena);
 
                     if(loginExito){
@@ -45,6 +45,7 @@ public class PedidoServlet extends HttpServlet{
                     System.out.println(e.getMessage());
                 }
             }
+            //Si se registra un usuario, lo metemos en la BD, creamos su usuario y volvemos a la página del pedido
             else if (buttonClicked.equals("Registrarse")) {
                 String correo = request.getParameter("correo");
                 String contrasena = request.getParameter("contrasena");
@@ -88,7 +89,7 @@ public class PedidoServlet extends HttpServlet{
             statement.setString(1, correo);
             statement.setString(2, contrasena);
 
-            // Ejecutar la sentencia de inserción
+            // Ejecutar la sentencia
             ResultSet resultados = statement.executeQuery();
 
             if (resultados.next()) {
@@ -106,7 +107,7 @@ public class PedidoServlet extends HttpServlet{
         Class.forName("org.postgresql.Driver");
         // Usamos try-with-resources para manejar la conexión y el PreparedStatement
         try (Connection conexion = Conexion.getConnection()) {
-            // Ejecutar la consulta SQL para seleccionar todos los usuarios
+            // Ejecutar la consulta SQL para insertar el usuario
             String sql = "INSERT INTO usuarios (correo_electronico, contrasena, numero_tarjeta, tipo_tarjeta) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = conexion.prepareStatement(sql);
             statement.setString(1, correo);
@@ -121,7 +122,7 @@ public class PedidoServlet extends HttpServlet{
             if (filasInsertadas > 0) {
                 System.out.println("Se ha insertado el nuevo usuario correctamente.");
             } else {
-                
+                System.out.println("Error al insertar el usuario.");
             }
             
         } catch (SQLException e) {

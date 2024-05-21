@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import java.util.*;
 
 public class CarritoServlet extends HttpServlet{
 
@@ -22,44 +21,55 @@ public class CarritoServlet extends HttpServlet{
 
         String buttonClicked = request.getParameter("buttonClicked");
 
+        //Comprobamos qué botón se ha pulsado
         if (buttonClicked != null) {
             if (buttonClicked.equals("Pagar")) {
+                //Si se quiere pagar, se guarda el importe sólo y nos vamos a la pantalla de pago
                 sesion.setAttribute("importe_pedido", carrito.getImporte());
                 gotoPage("/pago.jsp", request, response);
             }
             else if (buttonClicked.equals("Volver tienda")) {
+                //Si se quiere volver, se vuelve, el carrito seguirá guardado en sesión
                 gotoPage("/index.jsp", request, response);
             }
             else if(buttonClicked.equals("Hacer Pedido")){
+                //Si se quiere hacer un pedido, primero vemos si el usuario está logeado con su correo
                 if(sesion.getAttribute("correo") == null)
+                    //Si no lo está, nos vamos a login
                     gotoPage("/login.jsp", request, response);
                 else{
+                    //Si está logeado, cogemos su carrito y le mostramos confirmación de pedido
                     sesion.setAttribute("confirmacion", true);
                     Usuario user = (Usuario)sesion.getAttribute("usuario");
                     carrito.setUsuario(user);
                     Float importe = (Float)sesion.getAttribute("importe_pedido");
+                    //Hacemos un nuevo pedido
                     Pedido ped = new Pedido(user.getNombre(), importe);
                     try {
+                        //Se guarda en la BD y el carrito se resetea para hacer otras compras
                         registrarPedido(ped);
                         carrito.eliminarCarrito();
+                        sesion.setAttribute("carrito", carrito);
                     } catch (Exception e) {
                 
                     }
-                    
+                    //Se refresca la página para mostrar la confirmación
                     gotoPage("/pago.jsp", request, response);
                     sesion.setAttribute("confirmacion", false);
                 }
             }
         }
-
+        //Si se quiere eliminar algún producto cogemos este parámetro
         String botonEliminar = request.getParameter("Eliminar");
 
         if(botonEliminar != null){
+            //Cogemos el id de la selección a borrar y la borramos del carrito
             Integer id = Integer.valueOf(botonEliminar);
 
             for(Seleccion s : carrito.getSelecciones()){
                 if(s.getId() == id){
                     try {
+                        //Hay que actualizar la BD al eliminar un producto, devolviéndolo a la BD
                         actualizarStock(s);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -67,6 +77,7 @@ public class CarritoServlet extends HttpServlet{
                     
                 }
             }
+            //Se actualiza el carrito y se devuelve a la página del carrito
             carrito.eliminarSeleccion(id);
             sesion.setAttribute("carrito", carrito);
             gotoPage("/carrito.jsp", request, response);
@@ -136,7 +147,7 @@ public class CarritoServlet extends HttpServlet{
         Class.forName("org.postgresql.Driver");
         // Usamos try-with-resources para manejar la conexión y el PreparedStatement
         try (Connection conexion = Conexion.getConnection()) {
-            // Ejecutar la consulta SQL para seleccionar todos los usuarios
+            // Ejecutar la consulta SQL para insertar los pedidos
 		    String sql = "INSERT INTO pedidos (id_pedido, usuario, importe) VALUES (?, ?, ?)";
 		    PreparedStatement statement = conexion.prepareStatement(sql);
 		    statement.setString(1, ped.getId());
