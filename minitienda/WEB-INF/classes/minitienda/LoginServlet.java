@@ -12,9 +12,7 @@ import javax.servlet.http.*;
 
 public class LoginServlet extends HttpServlet{
 
-    private Pedido pedido;
-
-    private Conexion conexion = new Conexion();
+    private Conexion conexion;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -113,7 +111,7 @@ public class LoginServlet extends HttpServlet{
             statement.setString(1, correo);
             statement.setString(2, contrasena);
             statement.setString(3, numeroTarjeta);
-            statement.setString(3, tipoTarjeta);
+            statement.setString(4, tipoTarjeta);
 
             // Ejecutar la sentencia de inserción
             int filasInsertadas = statement.executeUpdate();
