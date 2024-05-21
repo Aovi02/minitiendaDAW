@@ -15,7 +15,6 @@ import java.util.*;
 public class TiendaServlet extends HttpServlet {
 
     //Aquí se guardan los productos
-    //Cada producto irá con la cantidad que haya, así permito que se seleccione el mismo producto varias veces
     Carrito carrito = new Carrito();
 
     //Clase conexión para conectarse a la BD
@@ -32,8 +31,10 @@ public class TiendaServlet extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         //ServletContext contexto = getServletContext();
 
+        //Comprobamos cuál de los botones se ha pulsado
         String buttonClicked = request.getParameter("buttonClicked");
         if (buttonClicked != null && buttonClicked.equals("Ver carrrito")) {
+            //Si se quiere ver el carrito, se guarda y nos vamos al carrito
             sesion.setAttribute("carrito", carrito);
             gotoPage("/carrito.jsp", request, response);
         }
@@ -61,7 +62,7 @@ public class TiendaServlet extends HttpServlet {
                 //Creamos Seleccion
                 Seleccion seleccion = new Seleccion(cd, cantidad);
 
-                //Comprobamos si se puede comprar
+                //Comprobamos si se puede efectuar dicha selección (si hay suficientes CDs disponibles)
                 boolean sePuedeComprar = false;
                 try {
                     sePuedeComprar = checkDisponibilidad(seleccion);
@@ -69,16 +70,16 @@ public class TiendaServlet extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
 
-                //Añadimos seleccion a carrito
+                //Añadimos seleccion a carrito si se puede comprar
+                //La variable added es para mostrarle al usuario si se ha añadido o no el CD
                 if(sePuedeComprar){
                     carrito.addSeleccion(seleccion);
-
                     request.setAttribute("added", true);
                 }
                 else{
                     request.setAttribute("added", false);
                 }
-
+                //Refrescamos la página para mostrar el mensaje
                 gotoPage("/index.jsp", request, response);
             }
         }

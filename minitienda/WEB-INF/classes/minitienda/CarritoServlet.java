@@ -35,7 +35,19 @@ public class CarritoServlet extends HttpServlet{
                     gotoPage("/login.jsp", request, response);
                 else{
                     sesion.setAttribute("confirmacion", true);
+                    Usuario user = (Usuario)sesion.getAttribute("usuario");
+                    carrito.setUsuario(user);
+                    Float importe = (Float)sesion.getAttribute("importe_pedido");
+                    Pedido ped = new Pedido(user.getNombre(), importe);
+                    try {
+                        registrarPedido(ped);
+                        carrito.eliminarCarrito();
+                    } catch (Exception e) {
+                
+                    }
+                    
                     gotoPage("/pago.jsp", request, response);
+                    sesion.setAttribute("confirmacion", false);
                 }
             }
         }
@@ -55,7 +67,6 @@ public class CarritoServlet extends HttpServlet{
                     
                 }
             }
-
             carrito.eliminarSeleccion(id);
             sesion.setAttribute("carrito", carrito);
             gotoPage("/carrito.jsp", request, response);
@@ -116,6 +127,32 @@ public class CarritoServlet extends HttpServlet{
                     }
                 }
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void registrarPedido(Pedido ped) throws ClassNotFoundException{
+        Class.forName("org.postgresql.Driver");
+        // Usamos try-with-resources para manejar la conexión y el PreparedStatement
+        try (Connection conexion = Conexion.getConnection()) {
+            // Ejecutar la consulta SQL para seleccionar todos los usuarios
+		    String sql = "INSERT INTO pedidos (id_pedido, usuario, importe) VALUES (?, ?, ?)";
+		    PreparedStatement statement = conexion.prepareStatement(sql);
+		    statement.setString(1, ped.getId());
+		    statement.setString(2, ped.getCorreoUsuario());
+		    statement.setFloat(3, ped.getImportePedido());
+
+		    // Ejecutar la sentencia de inserción
+		    int filasInsertadas = statement.executeUpdate();
+
+		    // Verificar si la inserción fue exitosa
+		    if (filasInsertadas > 0) {
+		        System.out.println("Se ha insertado el nuevo pedido correctamente.");
+		    } else {
+		        System.out.println("No se pudo insertar el nuevo pedido.");
+		    }
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

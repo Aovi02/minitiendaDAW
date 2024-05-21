@@ -19,6 +19,8 @@
           <input type="submit" value="Volver tienda" name="botonVolver" onclick="setButtonClicked(this.value)">
         <c:if test="${confirmacion == true}">
           <h2 align="center">Pedido hecho con éxito</h2>
+          <p align="center">Usuario: ${correo}</p>
+          <p align="center">Importe: ${importe_pedido}</p>
         </c:if>
         </center>
             <script>

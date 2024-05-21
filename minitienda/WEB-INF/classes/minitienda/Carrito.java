@@ -34,6 +34,15 @@ public class Carrito {
         }
     }
 
+    public void eliminarCarrito(){
+        Iterator<Seleccion> iterator = selecciones.iterator();
+            while (iterator.hasNext()) {
+                Seleccion s = iterator.next();
+                iterator.remove();
+                importe -= s.getCantidad() * s.getCd().getPrecio();
+            }
+    }
+
     public void setUsuario(Usuario u){
         if(u != null)
             usuario = u;

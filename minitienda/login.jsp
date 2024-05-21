@@ -16,6 +16,8 @@
             <label for="contrasena">Contraseña:</label>
             <input type="password" id="contrasena" name="contrasena" required>
             <br>
+            <label for="tipo-tarjeta">Tipo tarjeta:</label>
+            <input type="text" id="tipo-tarjeta" name="tipo-tarjeta" required>
             <label for="tarjeta">Tarjeta:</label>
             <input type="text" id="tarjeta" name="tarjeta" required>
             <br>
